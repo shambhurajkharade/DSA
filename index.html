@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Practical Code Library</title>
+<style>
+:root {
+  --bg:#f5f7fb; --panel:#fff; --text:#182235; --muted:#667085;
+  --line:#e6eaf0; --accent:#6558e8; --accent-soft:#efedff;
+  --code:#111827; --code-text:#e5e7eb; --shadow:0 10px 30px rgba(23,34,56,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+button,input{font:inherit}
+.topbar{height:68px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:17px;letter-spacing:-.3px}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#7569f6,#4d42c8);display:grid;place-items:center;color:white;font-weight:900}
+.top-actions{display:flex;gap:10px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:9px 13px;cursor:pointer;font-weight:650}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(30,40,80,.10)}
+.hero{padding:42px 5vw 28px;background:radial-gradient(circle at 85% 5%,#e8e5ff 0,transparent 28%),linear-gradient(180deg,#fff 0%,var(--bg) 100%)}
+.eyebrow{color:var(--accent);font-size:12px;text-transform:uppercase;letter-spacing:1.5px;font-weight:800}
+.hero h1{font-size:clamp(28px,4vw,42px);line-height:1.12;letter-spacing:-1.5px;margin:9px 0}
+.hero p{max-width:650px;color:var(--muted);margin:0}
+.stats{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:115px}
+.stat strong{display:block;font-size:19px}.stat span{font-size:12px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:25px;padding:22px 5vw 60px;max-width:1500px;margin:auto}
+.sidebar{position:sticky;top:90px;align-self:start;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px}
+.side-title{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin:2px 9px 10px}
+.category{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;border:0;background:transparent;padding:10px;border-radius:9px;color:#475467;cursor:pointer;margin:2px 0}
+.category:hover,.category.active{background:var(--accent-soft);color:var(--accent);font-weight:750}
+.count{font-size:11px;color:var(--muted)}
+.content{min-width:0}
+.toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:17px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:230px;max-width:520px}
+.search-wrap input{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 14px 12px 40px;background:#fff;outline:none}
+.search-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #6558e81c}
+.search-icon{position:absolute;left:14px;top:9px;color:#98a2b3;font-size:19px}
+.results{font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:0 2px 8px rgba(25,35,60,.025);transition:.18s}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.card-head{padding:16px 17px 12px}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card h2{font-size:17px;margin:0;letter-spacing:-.3px}
+.tag{font-size:11px;font-weight:750;background:#f0f2f6;color:#596579;border-radius:20px;padding:4px 9px;white-space:nowrap}
+.card p{font-size:13px;color:var(--muted);margin:8px 0 0;min-height:40px}
+.code-head{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#1b2433;color:#b9c3d3;font-size:11px}
+.code-actions{display:flex;gap:6px}
+.mini-btn{border:1px solid #485366;background:#273346;color:#eef2f7;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer}
+pre{margin:0;background:var(--code);color:var(--code-text);padding:15px;overflow:auto;max-height:290px;font:12px/1.6 "SFMono-Regular",Consolas,"Liberation Mono",monospace;tab-size:4}
+pre code{white-space:pre}
+.empty{background:#fff;border:1px dashed var(--line);border-radius:14px;padding:35px;text-align:center;color:var(--muted);grid-column:1/-1}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:0 20px 30px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(15px);background:#172033;color:#fff;padding:10px 15px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:10}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;gap:5px;overflow:auto;align-items:center}.side-title{display:none}.category{white-space:nowrap;width:auto}.grid{grid-template-columns:1fr}}
+@media(max-width:560px){.topbar{padding:0 4vw}.hero{padding:30px 4vw 22px}.layout{padding:17px 4vw 40px}.top-actions .btn{padding:8px 9px;font-size:12px}.brand{font-size:14px}.grid{gap:12px}.card p{min-height:0}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">J</div><span>Java Practical Library</span></div>
+  <div class="top-actions">
+    <button class="btn" id="downloadAll">Download all codes</button>
+  </div>
+</header>
+<section class="hero">
+  <div class="eyebrow">Your practical companion</div>
+  <h1>Java Programs, all in one place.</h1>
+  <p>Browse your practical programs by topic, search for a program, copy code, or download individual Java files. Everything works offline in your browser.</p>
+  <div class="stats">
+    <div class="stat"><strong id="totalCount">13</strong><span>Java programs</span></div>
+    <div class="stat"><strong id="categoryCount">6</strong><span>Topics</span></div>
+    <div class="stat"><strong>100%</strong><span>Offline ready</span></div>
+  </div>
+</section>
+<main class="layout">
+  <aside class="sidebar" id="categories">
+    <div class="side-title">Topics</div>
+  </aside>
+  <section class="content">
+    <div class="toolbar">
+      <div class="search-wrap"><span class="search-icon">⌕</span><input id="search" type="search" placeholder="Search programs... (e.g. BFS, sorting)"></div>
+      <div class="results" id="results"></div>
+    </div>
+    <div class="grid" id="programGrid"></div>
+  </section>
+</main>
+<footer>Made for learning and Java practical preparation · Open index.html to use this website</footer>
+<div class="toast" id="toast">Copied to clipboard</div>
+<script>
+const programs = [{"file": "BST.java", "name": "BST", "category": "Trees", "description": "Binary Search Tree operations such as insertion, searching, and deletion.", "code": "import java.util.Scanner;\n\nclass BST {\n    static class Node {\n        int data;\n        Node left, right;\n        Node(int data) { this.data = data; }\n    }\n\n    Node root;\n\n    Node insert(Node node, int value) {\n        if (node == null) return new Node(value);\n        if (value < node.data) node.left = insert(node.left, value);\n        else if (value > node.data) node.right = insert(node.right, value);\n        return node;\n    }\n\n    boolean search(Node node, int value) {\n        if (node == null) return false;\n        if (node.data == value) return true;\n        return value < node.data ? search(node.left, value) : search(node.right, value);\n    }\n\n    Node delete(Node node, int value) {\n        if (node == null) return null;\n        if (value < node.data) node.left = delete(node.left, value);\n        else if (value > node.data) node.right = delete(node.right, value);\n        else {\n            if (node.left == null) return node.right;\n            if (node.right == null) return node.left;\n            Node successor = node.right;\n            while (successor.left != null) successor = successor.left;\n            node.data = successor.data;\n            node.right = delete(node.right, successor.data);\n        }\n        return node;\n    }\n\n    void inorder(Node n) {\n        if (n != null) { inorder(n.left); System.out.print(n.data + \" \"); inorder(n.right); }\n    }\n    void preorder(Node n) {\n        if (n != null) { System.out.print(n.data + \" \"); preorder(n.left); preorder(n.right); }\n    }\n    void postorder(Node n) {\n        if (n != null) { postorder(n.left); postorder(n.right); System.out.print(n.data + \" \"); }\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        BST tree = new BST();\n        int choice, value;\n        do {\n            System.out.println(\"\\n1.Insert  2.Search  3.Delete  4.Inorder  5.Preorder  6.Postorder  0.Exit\");\n            choice = sc.nextInt();\n            switch (choice) {\n                case 1: System.out.print(\"Enter value: \"); value = sc.nextInt(); tree.root = tree.insert(tree.root, value); break;\n                case 2: System.out.print(\"Enter value: \"); value = sc.nextInt(); System.out.println(tree.search(tree.root, value) ? \"Found\" : \"Not found\"); break;\n                case 3: System.out.print(\"Enter value: \"); value = sc.nextInt(); tree.root = tree.delete(tree.root, value); break;\n                case 4: tree.inorder(tree.root); System.out.println(); break;\n                case 5: tree.preorder(tree.root); System.out.println(); break;\n                case 6: tree.postorder(tree.root); System.out.println(); break;\n                case 0: System.out.println(\"Exit\"); break;\n                default: System.out.println(\"Invalid choice\");\n            }\n        } while (choice != 0);\n        sc.close();\n    }\n}"}, {"file": "BinarySearch.java", "name": "BinarySearch", "category": "Searching", "description": "Searches a sorted array by repeatedly dividing the search range in half.", "code": "import java.util.Scanner;\n\nclass BinarySearch {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.print(\"Enter array size: \");\n        int n = sc.nextInt();\n        int[] a = new int[n];\n\n        System.out.println(\"Enter elements in sorted order:\");\n        for (int i = 0; i < n; i++) a[i] = sc.nextInt();\n\n        System.out.print(\"Enter element to search: \");\n        int key = sc.nextInt();\n\n        int low = 0, high = n - 1, position = -1;\n        while (low <= high) {\n            int mid = (low + high) / 2;\n            if (a[mid] == key) {\n                position = mid;\n                break;\n            } else if (key < a[mid]) {\n                high = mid - 1;\n            } else {\n                low = mid + 1;\n            }\n        }\n\n        if (position == -1) System.out.println(\"Element not found\");\n        else System.out.println(\"Element found at position \" + (position + 1));\n        sc.close();\n    }\n}"}, {"file": "BubbleSort.java", "name": "BubbleSort", "category": "Sorting", "description": "Sorts an array by comparing and swapping adjacent elements.", "code": "\r\nimport java.util.Scanner;\r\nimport java.util.Arrays;\r\n\r\nclass BubbleSort {\r\n    public static void main(String[] args) {\r\n        Scanner sc = new Scanner(System.in);\r\n\r\n        System.out.print(\"Enter array size: \");\r\n        int n = sc.nextInt();\r\n\r\n        int[] a = new int[n];\r\n\r\n        System.out.println(\"Enter elements:\");\r\n        for (int i = 0; i < n; i++) {\r\n            a[i] = sc.nextInt();\r\n        }\r\n\r\n        // Bubble Sort\r\n        for (int i = 0; i < n - 1; i++) {\r\n            for (int j = 0; j < n - 1 - i; j++) {\r\n\r\n                if (a[j] > a[j + 1]) {\r\n                    int temp = a[j];\r\n                    a[j] = a[j + 1];\r\n                    a[j + 1] = temp;\r\n                }\r\n            }\r\n        }\r\n\r\n        System.out.println(\"Sorted Array: \" + Arrays.toString(a));\r\n\r\n        sc.close();\r\n    }\r\n}\r"}, {"file": "GraphBFS.java", "name": "GraphBFS", "category": "Graphs", "description": "Breadth First Search using adjacency matrix and adjacency list.", "code": "import java.util.*;\n\nclass GraphBFS {\n    static void bfsMatrix(int[][] matrix, int start) {\n        boolean[] visited = new boolean[matrix.length];\n        Queue<Integer> q = new LinkedList<>();\n        visited[start] = true;\n        q.add(start);\n\n        while (!q.isEmpty()) {\n            int v = q.remove();\n            System.out.print(v + \" \");\n            for (int i = 0; i < matrix.length; i++) {\n                if (matrix[v][i] == 1 && !visited[i]) {\n                    visited[i] = true;\n                    q.add(i);\n                }\n            }\n        }\n    }\n\n    static void bfsList(ArrayList<ArrayList<Integer>> graph, int start) {\n        boolean[] visited = new boolean[graph.size()];\n        Queue<Integer> q = new LinkedList<>();\n        visited[start] = true;\n        q.add(start);\n\n        while (!q.isEmpty()) {\n            int v = q.remove();\n            System.out.print(v + \" \");\n            for (int neighbour : graph.get(v)) {\n                if (!visited[neighbour]) {\n                    visited[neighbour] = true;\n                    q.add(neighbour);\n                }\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.print(\"Enter vertices and edges: \");\n        int n = sc.nextInt(), e = sc.nextInt();\n        int[][] matrix = new int[n][n];\n        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();\n        for (int i = 0; i < n; i++) graph.add(new ArrayList<>());\n\n        System.out.println(\"Enter edges (vertex numbers 0 to \" + (n - 1) + \"):\");\n        for (int i = 0; i < e; i++) {\n            int u = sc.nextInt(), v = sc.nextInt();\n            matrix[u][v] = matrix[v][u] = 1;\n            graph.get(u).add(v);\n            graph.get(v).add(u);\n        }\n\n        System.out.print(\"Start vertex: \");\n        int start = sc.nextInt();\n        System.out.print(\"BFS using Matrix: \");\n        bfsMatrix(matrix, start);\n        System.out.print(\"\\nBFS using List: \");\n        bfsList(graph, start);\n        System.out.println();\n        sc.close();\n    }\n}"}, {"file": "GraphDFS.java", "name": "GraphDFS", "category": "Graphs", "description": "Depth First Search using adjacency matrix and adjacency list.", "code": "import java.util.*;\n\nclass GraphDFS {\n    static void dfsMatrix(int[][] matrix, boolean[] visited, int v) {\n        visited[v] = true;\n        System.out.print(v + \" \");\n        for (int i = 0; i < matrix.length; i++)\n            if (matrix[v][i] == 1 && !visited[i]) dfsMatrix(matrix, visited, i);\n    }\n\n    static void dfsList(ArrayList<ArrayList<Integer>> graph, boolean[] visited, int v) {\n        visited[v] = true;\n        System.out.print(v + \" \");\n        for (int neighbour : graph.get(v))\n            if (!visited[neighbour]) dfsList(graph, visited, neighbour);\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.print(\"Enter vertices and edges: \");\n        int n = sc.nextInt(), e = sc.nextInt();\n        int[][] matrix = new int[n][n];\n        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();\n        for (int i = 0; i < n; i++) graph.add(new ArrayList<>());\n\n        System.out.println(\"Enter edges (vertex numbers 0 to \" + (n - 1) + \"):\");\n        for (int i = 0; i < e; i++) {\n            int u = sc.nextInt(), v = sc.nextInt();\n            matrix[u][v] = matrix[v][u] = 1;\n            graph.get(u).add(v);\n            graph.get(v).add(u);\n        }\n\n        System.out.print(\"Start vertex: \");\n        int start = sc.nextInt();\n\n        System.out.print(\"DFS using Matrix: \");\n        dfsMatrix(matrix, new boolean[n], start);\n        System.out.print(\"\\nDFS using List: \");\n        dfsList(graph, new boolean[n], start);\n        System.out.println();\n        sc.close();\n    }\n}"}, {"file": "Hashing.java", "name": "Hashing", "category": "Hashing", "description": "Implements a hash table with separate chaining for collisions.", "code": "import java.util.*;\n\nclass Hashing {\n    static final int SIZE = 10;\n    static LinkedList<Integer>[] table = new LinkedList[SIZE];\n\n    static void insert(int key) {\n        int index = key % SIZE;\n        if (table[index] == null) table[index] = new LinkedList<>();\n        if (!table[index].contains(key)) table[index].add(key);\n        System.out.println(key + \" inserted\");\n    }\n\n    static void search(int key) {\n        int index = key % SIZE;\n        if (table[index] != null && table[index].contains(key))\n            System.out.println(key + \" found at index \" + index);\n        else\n            System.out.println(key + \" not found\");\n    }\n\n    static void delete(int key) {\n        int index = key % SIZE;\n        if (table[index] != null && table[index].remove(Integer.valueOf(key)))\n            System.out.println(key + \" deleted\");\n        else\n            System.out.println(key + \" not found\");\n    }\n\n    static void display() {\n        for (int i = 0; i < SIZE; i++)\n            System.out.println(i + \" -> \" + table[i]);\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int choice, key;\n        do {\n            System.out.println(\"\\n1.Insert  2.Search  3.Delete  4.Display  0.Exit\");\n            choice = sc.nextInt();\n            switch (choice) {\n                case 1: System.out.print(\"Enter key: \"); key = sc.nextInt(); insert(key); break;\n                case 2: System.out.print(\"Enter key: \"); key = sc.nextInt(); search(key); break;\n                case 3: System.out.print(\"Enter key: \"); key = sc.nextInt(); delete(key); break;\n                case 4: display(); break;\n                case 0: System.out.println(\"Exit\"); break;\n                default: System.out.println(\"Invalid choice\");\n            }\n        } while (choice != 0);\n        sc.close();\n    }\n}"}, {"file": "LinearSearch.java", "name": "LinearSearch", "category": "Searching", "description": "Checks each array element one by one until the target is found.", "code": "import java.util.Scanner;\n\nclass LinearSearch {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.print(\"Enter array size: \");\n        int n = sc.nextInt();\n        int[] a = new int[n];\n\n        System.out.println(\"Enter array elements:\");\n        for (int i = 0; i < n; i++) a[i] = sc.nextInt();\n\n        System.out.print(\"Enter element to search: \");\n        int key = sc.nextInt();\n        int position = -1;\n\n        for (int i = 0; i < n; i++) {\n            if (a[i] == key) {\n                position = i;\n                break;\n            }\n        }\n\n        if (position == -1) System.out.println(\"Element not found\");\n        else System.out.println(\"Element found at position \" + (position + 1));\n        sc.close();\n    }\n}"}, {"file": "MergeSort.java", "name": "MergeSort", "category": "Sorting", "description": "Divides the array into halves, sorts them, and merges the sorted halves.", "code": "\r\nimport java.util.Scanner;\r\nimport java.util.Arrays;\r\n\r\nclass MergeSort {\r\n\r\n    static void mergeSort(int[] a, int left, int right) {\r\n        if (left >= right)\r\n            return;\r\n\r\n        int mid = (left + right) / 2;\r\n\r\n        mergeSort(a, left, mid);\r\n        mergeSort(a, mid + 1, right);\r\n\r\n        merge(a, left, mid, right);\r\n    }\r\n\r\n    static void merge(int[] a, int left, int mid, int right) {\r\n\r\n        int[] temp = new int[right - left + 1];\r\n\r\n        int i = left;\r\n        int j = mid + 1;\r\n        int k = 0;\r\n\r\n        while (i <= mid && j <= right) {\r\n            if (a[i] <= a[j])\r\n                temp[k++] = a[i++];\r\n            else\r\n                temp[k++] = a[j++];\r\n        }\r\n\r\n        while (i <= mid)\r\n            temp[k++] = a[i++];\r\n\r\n        while (j <= right)\r\n            temp[k++] = a[j++];\r\n\r\n        for (i = 0; i < temp.length; i++)\r\n            a[left + i] = temp[i];\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n\r\n        Scanner sc = new Scanner(System.in);\r\n\r\n        System.out.print(\"Enter array size: \");\r\n        int n = sc.nextInt();\r\n\r\n        int[] a = new int[n];\r\n\r\n        System.out.println(\"Enter elements:\");\r\n        for (int i = 0; i < n; i++) {\r\n            a[i] = sc.nextInt();\r\n        }\r\n\r\n        mergeSort(a, 0, n - 1);\r\n\r\n        System.out.println(\"Merge Sort: \" + Arrays.toString(a));\r\n\r\n        sc.close();\r\n    }\r\n}"}, {"file": "QueueADT.java", "name": "QueueADT", "category": "Data Structures", "description": "Queue operations: enqueue, dequeue, and display.", "code": "import java.util.Scanner;\n\nclass QueueADT {\n    int[] queue = new int[5];\n    int front = 0, rear = -1;\n\n    void enqueue(int value) {\n        if (rear == queue.length - 1) {\n            System.out.println(\"Queue is full\");\n        } else {\n            queue[++rear] = value;\n            System.out.println(value + \" inserted\");\n        }\n    }\n\n    void dequeue() {\n        if (front > rear) {\n            System.out.println(\"Queue is empty\");\n        } else {\n            System.out.println(\"Deleted: \" + queue[front++]);\n        }\n    }\n\n    void display() {\n        if (front > rear) {\n            System.out.println(\"Queue is empty\");\n            return;\n        }\n        System.out.print(\"Queue: \");\n        for (int i = front; i <= rear; i++) System.out.print(queue[i] + \" \");\n        System.out.println();\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        QueueADT q = new QueueADT();\n        int choice;\n        do {\n            System.out.println(\"\\n1.Enqueue  2.Dequeue  3.Display  0.Exit\");\n            choice = sc.nextInt();\n            switch (choice) {\n                case 1: System.out.print(\"Enter value: \"); q.enqueue(sc.nextInt()); break;\n                case 2: q.dequeue(); break;\n                case 3: q.display(); break;\n                case 0: System.out.println(\"Exit\"); break;\n                default: System.out.println(\"Invalid choice\");\n            }\n        } while (choice != 0);\n        sc.close();\n    }\n}"}, {"file": "QuickSort.java", "name": "QuickSort", "category": "Sorting", "description": "Partitions the array around a pivot and recursively sorts both sides.", "code": "\r\nimport java.util.Scanner;\r\nimport java.util.Arrays;\r\n\r\nclass QuickSort {\r\n\r\n    static void quickSort(int[] a, int low, int high) {\r\n\r\n        if (low < high) {\r\n\r\n            int p = partition(a, low, high);\r\n\r\n            quickSort(a, low, p - 1);\r\n            quickSort(a, p + 1, high);\r\n        }\r\n    }\r\n\r\n    static int partition(int[] a, int low, int high) {\r\n\r\n        int pivot = a[high];\r\n        int i = low - 1;\r\n\r\n        for (int j = low; j < high; j++) {\r\n\r\n            if (a[j] <= pivot) {\r\n                i++;\r\n\r\n                int temp = a[i];\r\n                a[i] = a[j];\r\n                a[j] = temp;\r\n            }\r\n        }\r\n\r\n        int temp = a[i + 1];\r\n        a[i + 1] = a[high];\r\n        a[high] = temp;\r\n\r\n        return i + 1;\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n\r\n        Scanner sc = new Scanner(System.in);\r\n\r\n        System.out.print(\"Enter array size: \");\r\n        int n = sc.nextInt();\r\n\r\n        int[] a = new int[n];\r\n\r\n        System.out.println(\"Enter elements:\");\r\n        for (int i = 0; i < n; i++) {\r\n            a[i] = sc.nextInt();\r\n        }\r\n\r\n        quickSort(a, 0, n - 1);\r\n\r\n        System.out.println(\"Quick Sort: \" + Arrays.toString(a));\r\n\r\n        sc.close();\r\n    }\r\n}\r"}, {"file": "RoundRobin.java", "name": "RoundRobin", "category": "CPU Scheduling", "description": "Round Robin CPU scheduling with waiting and turnaround time.", "code": "import java.util.*;\n\nclass RoundRobin {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n\n        System.out.print(\"Enter number of processes: \");\n        int n = sc.nextInt();\n        int[] bt = new int[n];\n        int[] remaining = new int[n];\n        int[] completion = new int[n];\n\n        for (int i = 0; i < n; i++) {\n            System.out.print(\"Enter burst time for P\" + (i + 1) + \": \");\n            bt[i] = sc.nextInt();\n            remaining[i] = bt[i];\n        }\n\n        System.out.print(\"Enter time quantum: \");\n        int quantum = sc.nextInt();\n\n        if (quantum <= 0) {\n            System.out.println(\"Time quantum must be positive.\");\n            sc.close();\n            return;\n        }\n\n        Queue<Integer> q = new LinkedList<>();\n        for (int i = 0; i < n; i++) q.add(i);\n\n        int time = 0;\n        while (!q.isEmpty()) {\n            int p = q.remove();\n            int run = Math.min(quantum, remaining[p]);\n            time += run;\n            remaining[p] -= run;\n\n            if (remaining[p] == 0) completion[p] = time;\n            else q.add(p);\n        }\n\n        System.out.println(\"\\nProcess\\tBT\\tWT\\tTAT\");\n        for (int i = 0; i < n; i++) {\n            int tat = completion[i]; // all arrival times are zero\n            int wt = tat - bt[i];\n            System.out.println(\"P\" + (i + 1) + \"\\t\" + bt[i] + \"\\t\" + wt + \"\\t\" + tat);\n        }\n        sc.close();\n    }\n}"}, {"file": "SelectionSort.java", "name": "SelectionSort", "category": "Sorting", "description": "Repeatedly selects the smallest remaining element and places it in position.", "code": "\r\nimport java.util.Scanner;\r\nimport java.util.Arrays;\r\n\r\nclass SelectionSort {\r\n    public static void main(String[] args) {\r\n        Scanner sc = new Scanner(System.in);\r\n\r\n        System.out.print(\"Enter array size: \");\r\n        int n = sc.nextInt();\r\n\r\n        int[] a = new int[n];\r\n\r\n        System.out.println(\"Enter elements:\");\r\n        for (int i = 0; i < n; i++) {\r\n            a[i] = sc.nextInt();\r\n        }\r\n\r\n        // Selection Sort\r\n        for (int i = 0; i < n - 1; i++) {\r\n            int min = i;\r\n\r\n            for (int j = i + 1; j < n; j++) {\r\n                if (a[j] < a[min]) {\r\n                    min = j;\r\n                }\r\n            }\r\n\r\n            int temp = a[i];\r\n            a[i] = a[min];\r\n            a[min] = temp;\r\n        }\r\n\r\n        System.out.println(\"Sorted Array: \" + Arrays.toString(a));\r\n\r\n        sc.close();\r\n    }\r\n}\r"}, {"file": "StackADT.java", "name": "StackADT", "category": "Data Structures", "description": "Stack operations: push, pop, peek, and display.", "code": "import java.util.Scanner;\n\nclass StackADT {\n    int[] stack = new int[5];\n    int top = -1;\n\n    void push(int value) {\n        if (top == stack.length - 1) {\n            System.out.println(\"Stack Overflow\");\n        } else {\n            stack[++top] = value;\n            System.out.println(value + \" pushed\");\n        }\n    }\n\n    void pop() {\n        if (top == -1) {\n            System.out.println(\"Stack Underflow\");\n        } else {\n            System.out.println(\"Popped: \" + stack[top--]);\n        }\n    }\n\n    void peek() {\n        if (top == -1) System.out.println(\"Stack is empty\");\n        else System.out.println(\"Top: \" + stack[top]);\n    }\n\n    void display() {\n        if (top == -1) {\n            System.out.println(\"Stack is empty\");\n            return;\n        }\n        System.out.print(\"Stack: \");\n        for (int i = top; i >= 0; i--) System.out.print(stack[i] + \" \");\n        System.out.println();\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        StackADT s = new StackADT();\n        int choice;\n        do {\n            System.out.println(\"\\n1.Push  2.Pop  3.Peek  4.Display  0.Exit\");\n            choice = sc.nextInt();\n            switch (choice) {\n                case 1: System.out.print(\"Enter value: \"); s.push(sc.nextInt()); break;\n                case 2: s.pop(); break;\n                case 3: s.peek(); break;\n                case 4: s.display(); break;\n                case 0: System.out.println(\"Exit\"); break;\n                default: System.out.println(\"Invalid choice\");\n            }\n        } while (choice != 0);\n        sc.close();\n    }\n}"}];
+const categories = ["All", ...new Set(programs.map(p => p.category))];
+let activeCategory = "All";
+const grid = document.getElementById("programGrid");
+const categoryBox = document.getElementById("categories");
+const search = document.getElementById("search");
+const toast = document.getElementById("toast");
+
+document.getElementById("totalCount").textContent = programs.length;
+document.getElementById("categoryCount").textContent = categories.length - 1;
+
+function renderCategories(){
+  categoryBox.innerHTML = '<div class="side-title">Topics</div>';
+  categories.forEach(cat => {
+    const count = cat === "All" ? programs.length : programs.filter(p => p.category === cat).length;
+    const button = document.createElement("button");
+    button.className = "category" + (activeCategory === cat ? " active" : "");
+    button.innerHTML = `<span>${cat}</span><span class="count">${count}</span>`;
+    button.onclick = () => { activeCategory = cat; renderCategories(); renderPrograms(); };
+    categoryBox.appendChild(button);
+  });
+}
+function showToast(message){
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 1600);
+}
+function downloadFile(filename, content){
+  const blob = new Blob([content], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+function renderPrograms(){
+  const term = search.value.trim().toLowerCase();
+  const filtered = programs.filter(p =>
+    (activeCategory === "All" || p.category === activeCategory) &&
+    (p.name.toLowerCase().includes(term) || p.category.toLowerCase().includes(term) || p.description.toLowerCase().includes(term) || p.code.toLowerCase().includes(term))
+  );
+  document.getElementById("results").textContent = `${filtered.length} program${filtered.length === 1 ? "" : "s"} found`;
+  grid.innerHTML = "";
+  if(!filtered.length){
+    grid.innerHTML = '<div class="empty"><strong>No programs found</strong><br>Try another search or choose a different topic.</div>';
+    return;
+  }
+  filtered.forEach(p => {
+    const card = document.createElement("article");
+    card.className = "card";
+    const head = document.createElement("div");
+    head.className = "card-head";
+    head.innerHTML = `<div class="card-top"><h2>${p.name}</h2><span class="tag">${p.category}</span></div><p>${p.description}</p>`;
+    const codeHead = document.createElement("div");
+    codeHead.className = "code-head";
+    codeHead.innerHTML = `<span>${p.file}</span><div class="code-actions"><button class="mini-btn copy">Copy</button><button class="mini-btn download">Download</button></div>`;
+    const pre = document.createElement("pre");
+    const code = document.createElement("code");
+    code.textContent = p.code;
+    pre.appendChild(code);
+    codeHead.querySelector(".copy").onclick = async () => {
+      try { await navigator.clipboard.writeText(p.code); showToast("Code copied"); }
+      catch(e) { showToast("Clipboard unavailable — select and copy the code"); }
+    };
+    codeHead.querySelector(".download").onclick = () => { downloadFile(p.file, p.code); showToast(`${p.file} downloaded`); };
+    card.append(head, codeHead, pre);
+    grid.appendChild(card);
+  });
+}
+search.addEventListener("input", renderPrograms);
+document.getElementById("downloadAll").onclick = () => {
+  // Download a combined text file; individual .java downloads are available on each card.
+  const combined = programs.map(p => `// ===== ${p.file} =====\n${p.code}\n`).join("\n\n");
+  downloadFile("Java_Practical_Codes.txt", combined);
+  showToast("All programs downloaded as a text file");
+};
+renderCategories();
+renderPrograms();
+</script>
+</body>
+</html>
